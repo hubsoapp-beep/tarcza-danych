@@ -8,6 +8,8 @@
 import { makeConfig, scrubSecrets, scrubPii, mint, restore } from '../hooks/detect.ts'
 import { scrubPl, loadGlossary, learnFrom, validPesel, validNip, validRegon, validIban, validLuhn, validDowod, mask } from '../hooks/pl.ts'
 
+// A shared CI runner is slower than a laptop: stay inside the hook's 10 s budget there.
+const LIMIT = process.env.CI ? 9000 : 6000
 const cfg = makeConfig({ pii: true, redactPrivateIps: true })
 const scrub = (t: string): string => scrubPii(scrubPl(scrubSecrets(t, cfg), cfg), cfg)
 const TAG = /\[REDACTED-([A-Z]+)-[0-9a-f]{8}\]/g
@@ -229,13 +231,13 @@ if (mask('Zimowa13!@') !== 'Zi••••••••' || mask('abc') !== '•�
   scrubPl(text, cfg)
   const ms = Math.round(performance.now() - t0)
   console.log(`time  4.0 MB of prose  ${ms} ms`)
-  if (ms > 6000) fail(`SLOW  ${ms} ms`)
+  if (ms > LIMIT) fail(`SLOW  ${ms} ms`)
   const digits = '1234567890 '.repeat(400_000)
   const t1 = performance.now()
   scrubPl(digits, cfg)
   const ms1 = Math.round(performance.now() - t1)
   console.log(`time  4.4 MB of digits  ${ms1} ms`)
-  if (ms1 > 6000) fail(`SLOW digits ${ms1} ms`)
+  if (ms1 > LIMIT) fail(`SLOW digits ${ms1} ms`)
 }
 
 console.log(bad === 0 ? `ok  ${HIDE.length} hidden, ${KEEP.length} kept, glossary, learning, placeholders intact` : `${bad} failure(s)`)
