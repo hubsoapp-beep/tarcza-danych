@@ -1,0 +1,139 @@
+{
+  "$schema": "https://anthropic.com/claude-code/plugin.schema.json",
+  "name": "redactor-pl",
+  "version": "0.1.0",
+  "description": "Tarcza danych: podmienia hasła, klucze, dane osobowe PL i dane serwerów na placeholdery, zanim trafią do AI. Fork transcript-redactor 0.4.1 z warstwą polską, sejfem z notatek i panelem.",
+  "author": {
+    "name": "Miłosz Zając"
+  },
+  "userConfig": {
+    "secrets": {
+      "type": "boolean",
+      "title": "Hide secrets",
+      "description": "Hide vendor-shaped keys and high-entropy tokens",
+      "default": true
+    },
+    "pii": {
+      "type": "boolean",
+      "title": "Hide personal information",
+      "description": "Ukryj adresy e-mail i adresy IP",
+      "default": true
+    },
+    "hideEmails": {
+      "type": "boolean",
+      "title": "Hide emails",
+      "description": "With pii on, also hide email addresses. Turn off to hide only IP addresses",
+      "default": true
+    },
+    "redactPrivateIps": {
+      "type": "boolean",
+      "title": "Hide private IP addresses",
+      "description": "Ukryj też adresy IP z sieci lokalnej (10.x, 192.168.x)",
+      "default": true
+    },
+    "restoreInToolInputs": {
+      "type": "boolean",
+      "title": "Put real values back for tools",
+      "description": "Swap a placeholder back for its real value before a tool runs, so commands and file writes keep working",
+      "default": true
+    },
+    "restoreTools": {
+      "type": "string",
+      "title": "Tools that get real values",
+      "description": "Tools that run on this machine and may receive the real value behind a placeholder, separated by commas. Never list a tool that sends its input to another model or the network (Agent, WebFetch, WebSearch)",
+      "default": "Bash,Write,Edit,MultiEdit,NotebookEdit"
+    },
+    "notify": {
+      "type": "boolean",
+      "title": "Say when something is hidden",
+      "description": "Show a count on the tool row and a toast on a prompt",
+      "default": true
+    },
+    "minEntropy": {
+      "type": "number",
+      "title": "Entropy floor (bits per character)",
+      "description": "A mixed-case token above this floor is treated as a secret. Raise it to hide less",
+      "default": 3.6
+    },
+    "minLength": {
+      "type": "number",
+      "title": "Length floor",
+      "description": "The shortest token the entropy test looks at",
+      "default": 24
+    },
+    "contextMinEntropy": {
+      "type": "number",
+      "title": "Entropy floor next to a key name",
+      "description": "The floor used when the token sits after API_KEY=, \"token\":, Bearer and the like",
+      "default": 3
+    },
+    "allow": {
+      "type": "string",
+      "title": "Never hide these",
+      "description": "Exact strings to leave alone, separated by commas",
+      "default": ""
+    },
+    "allowEmails": {
+      "type": "string",
+      "title": "Never hide these emails",
+      "description": "Exact addresses, or a domain written as @example.com, separated by commas",
+      "default": ""
+    },
+    "allowPrefixes": {
+      "type": "string",
+      "title": "Never hide tokens starting with",
+      "description": "Extra id prefixes to treat as public, separated by commas (price_, prod_ and the other Stripe object ids are already public)",
+      "default": ""
+    },
+    "denyPrefixes": {
+      "type": "string",
+      "title": "Always test tokens starting with",
+      "description": "Prefixes to put back under the entropy test even though they look like a public id, separated by commas",
+      "default": ""
+    },
+    "pl": {
+      "type": "boolean",
+      "title": "Warstwa polska",
+      "description": "Hasła po polskich etykietach, PESEL, NIP, REGON, dowód, IBAN, karta, telefon, loginy, domeny, słownik",
+      "default": true
+    },
+    "personalData": {
+      "type": "boolean",
+      "title": "Dane osobowe PL",
+      "description": "PESEL, NIP, REGON, numer dowodu, IBAN, numer karty, telefon",
+      "default": true
+    },
+    "infrastructure": {
+      "type": "boolean",
+      "title": "Infrastruktura",
+      "description": "Loginy, konta baz danych i domeny podane po etykiecie",
+      "default": true
+    },
+    "domains": {
+      "type": "boolean",
+      "title": "Domeny",
+      "description": "Ukryj nazwy domen podane po etykiecie (Domena:, Serwer:, --domain=)",
+      "default": true
+    },
+    "logins": {
+      "type": "boolean",
+      "title": "Loginy",
+      "description": "Ukryj loginy (Użytkownik:, user@host, --user=, nazwa bazy)",
+      "default": true
+    },
+    "vaultSources": {
+      "type": "string",
+      "title": "Notatki do nauki (sejf)",
+      "description": "Pliki i foldery oddzielone przecinkami. Przy starcie sesji mod czyta je i ukrywa każde hasło, login i domenę z nich wszędzie, także bez etykiety. Np. ~/Notatki/serwery",
+      "default": ""
+    },
+    "glossaryFile": {
+      "type": "string",
+      "title": "Słownik",
+      "description": "Plik z wierszami KLIENT: nazwa, OSOBA: Jan* Kowalsk*, DOMENA: firma.pl",
+      "default": "~/.claude/redactor-pl/slownik.txt"
+    }
+  },
+  "license": "MIT",
+  "types": "./types/index.d.ts"
+}

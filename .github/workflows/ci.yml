@@ -1,0 +1,27 @@
+name: ci
+on:
+  push:
+    branches: [main]
+  pull_request:
+jobs:
+  node-tests:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: plugins/redactor-pl
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - run: node --experimental-strip-types test/detect.test.mts
+      - run: node --experimental-strip-types test/pl.test.mts
+      - run: node --experimental-strip-types test/random-tags.test.mts
+      - run: node --experimental-strip-types test/session-privacy.test.mts
+      - run: node --experimental-strip-types test/pii-options.test.mts
+  no-real-secrets:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Fail on a private key block
+        run: "! grep -rIn -e '-----BEGIN [A-Z ]*PRIVATE KEY-----' . --exclude-dir=.git --exclude-dir=test --exclude-dir=tests"

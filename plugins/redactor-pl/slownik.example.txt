@@ -1,0 +1,9 @@
+# Słownik Tarczy danych. Skopiuj do ~/.claude/redactor-pl/slownik.txt i uzupełnij.
+# Wiersz: KATEGORIA: wartość. Kategorie: KLIENT, OSOBA, DOMENA, LOGIN, HASLO, TEL, EMAIL, IP.
+# Gwiazdka po słowie zastępuje końcówkę fleksyjną: "Kowalsk*" łapie Kowalski, Kowalskiego, Kowalskim.
+# Wielkość liter nie ma znaczenia. Ta sama wartość dostaje zawsze ten sam placeholder.
+KLIENT: Kancelaria Nowak i Wspólnicy
+KLIENT: kancelaria-nowak.pl
+OSOBA: Jan Kowalsk*
+OSOBA: Janem Kowalskim
+DOMENA: sklep-ala.pl

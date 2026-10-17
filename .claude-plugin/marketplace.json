@@ -1,0 +1,18 @@
+{
+  "name": "tarcza-danych",
+  "owner": {
+    "name": "Miłosz Zając"
+  },
+  "metadata": {
+    "description": "Tarcza danych: mod do Claude Code, który ukrywa hasła i dane poufne przed AI"
+  },
+  "plugins": [
+    {
+      "name": "redactor-pl",
+      "source": "./plugins/redactor-pl",
+      "description": "Podmienia hasła, klucze, dane osobowe PL i dane serwerów na placeholdery, zanim trafią do AI. Sejf z notatek, słownik własny, panel z licznikami.",
+      "version": "0.1.0",
+      "license": "MIT"
+    }
+  ]
+}
