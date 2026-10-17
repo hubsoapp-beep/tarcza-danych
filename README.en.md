@@ -6,6 +6,12 @@ It extends Ray Amjad's [`transcript-redactor`](https://github.com/ray-amjad/clau
 
 > **A seat belt, not a vault.** See [SECURITY.md](SECURITY.md) for the known limits.
 
+## What it looks like
+
+`/redact-demo` prints a made-up server note before and after the swap, and the "Tarcza danych" pane counts what was hidden. All data in the screenshots is made up.
+
+![The /redact-demo output, before and after, with the pane below](docs/img/demo-przed-po.png)
+
 ## Install
 
 ```

@@ -11,6 +11,16 @@ Powstał na szkolenie z AI i jest rozwinięciem [`transcript-redactor`](https://
 
 > **To pas bezpieczeństwa, nie sejf.** Zmniejsza ryzyko pomyłki. Nie zastępuje nawyków: nie wklejaj haseł, nie używaj jednego hasła w wielu miejscach. Lista granic jest w [SECURITY.md](SECURITY.md).
 
+## Jak to wygląda
+
+`/redact-demo` pokazuje fałszywą notatkę serwera przed i po podmianie, a panel „Tarcza danych” liczy, co zostało ukryte (kategorie, maski wartości, źródło). Wszystkie dane na zrzutach są zmyślone.
+
+![Pokaz /redact-demo: tekst przed i po podmianie, pod spodem panel z licznikami](docs/img/demo-przed-po.png)
+
+Panel zaraz po starcie sesji, zanim cokolwiek zostanie ukryte:
+
+![Panel Tarcza danych tuż po starcie](docs/img/panel.png)
+
 ## Co ukrywa
 
 - **Klucze i tokeny** (około 70 formatów, JWT, klucze prywatne): silnik upstream.
