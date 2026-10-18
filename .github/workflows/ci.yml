@@ -19,6 +19,20 @@ jobs:
       - run: node --experimental-strip-types test/random-tags.test.mts
       - run: node --experimental-strip-types test/session-privacy.test.mts
       - run: node --experimental-strip-types test/pii-options.test.mts
+  opencode-tests:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: plugins/redactor-opencode
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: plugins/redactor-opencode/package-lock.json
+      - run: npm ci --no-audit --no-fund
+      - run: CI=1 npm test
   no-real-secrets:
     runs-on: ubuntu-latest
     steps:
