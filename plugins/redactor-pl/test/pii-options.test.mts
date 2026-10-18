@@ -15,7 +15,8 @@ for (const relativePath of ['../hooks/detect.ts']) {
     const tag = hidden.match(/\[REDACTED-IP-[0-9a-f]{8}\]/)[0]
     assert.equal(detector.restore(detector.escapeLiteralTags(tag)), tag)
   }
-  for (const ip of ['127.0.0.1', '10.0.0.1', '192.168.1.1', '172.16.0.1', '192.0.2.1']) {
+  for (const ip of ['127.0.0.1', '0.0.0.0']) assert.equal(detector.scrubPii(ip, detector.makeConfig({ redactPrivateIps: true })), ip)
+  for (const ip of ['10.0.0.1', '192.168.1.1', '172.16.0.1', '192.0.2.1']) {
     assert.equal(detector.scrubPii(ip, config), ip)
     assert.notEqual(detector.scrubPii(ip, detector.makeConfig({ redactPrivateIps: true })), ip)
   }

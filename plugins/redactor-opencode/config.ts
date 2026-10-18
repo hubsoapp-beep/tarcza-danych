@@ -6,6 +6,7 @@ export const DEFAULT_OPTIONS = {
   pii: true,
   hideEmails: true,
   redactPrivateIps: true,
+  allowLocalUrls: true,
   restoreInToolInputs: true,
   restoreTools: 'shell,write,edit,patch',
   notify: true,

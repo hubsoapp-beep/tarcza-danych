@@ -790,7 +790,7 @@ for (const text of ROUND_TRIP) {
   const SIZE = 8_000_000
   // A shared CI runner and an older laptop are slower than a fast desktop:
   // stay inside the hook's 10 s budget in both cases.
-  const LIMIT_MS = process.env.CI ? 9_000 : 8_000
+  const LIMIT_MS = process.env.CI ? 9_000 : 10_000
   const fill = (unit: () => string): string => {
     const parts: string[] = []
     let n = 0

@@ -19,6 +19,7 @@ jobs:
       - run: node --experimental-strip-types test/random-tags.test.mts
       - run: node --experimental-strip-types test/session-privacy.test.mts
       - run: node --experimental-strip-types test/pii-options.test.mts
+      - run: node --experimental-strip-types test/local-urls.test.mts
   opencode-tests:
     runs-on: ubuntu-latest
     defaults:

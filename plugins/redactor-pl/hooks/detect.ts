@@ -46,6 +46,9 @@ export type Config = {
   pii: boolean
   emails: boolean
   privateIps: boolean
+  // Keep a private/loopback host when it is the host of a URL, so a local
+  // server link stays usable. A bare private address is still hidden.
+  allowLocalUrls: boolean
   // redactor-pl: the Polish layer (pl.ts), switch by switch.
   pl: boolean
   plPersonal: boolean
@@ -1542,19 +1545,45 @@ function isPrivateV4(ip: string): boolean {
   return false
 }
 
+// 0.0.0.0 and 127.0.0.0/8 are bind/loopback addresses, not infrastructure
+// secrets. Hiding them only breaks a local server link.
+function isLoopbackV4(ip: string): boolean {
+  return ip === '0.0.0.0' || ip.startsWith('127.')
+}
+
+function isLoopbackV6(ip: string): boolean {
+  const lower = ip.toLowerCase()
+  return lower === '::' || lower === '::1'
+}
+
+function isPrivateV6(ip: string): boolean {
+  const lower = ip.toLowerCase()
+  return lower.startsWith('fe80:') || lower.startsWith('fc') || lower.startsWith('fd')
+}
+
+// `http://<ip>:8096` or `http://<ip>/` is a link, not a bare address in prose.
+// A private host there is kept when `allowLocalUrls` is on.
+function inUrlHost(whole: string, offset: number, length: number): boolean {
+  const before = whole.slice(Math.max(0, offset - 10), offset)
+  const after = whole.slice(offset + length, offset + length + 9)
+  return /(?:https?:\/\/|\/\/)$/i.test(before) && /^(?::\d{1,5}(?:[/?#]|$)|[/?#]|$)/.test(after)
+}
+
 export function scrubPii(text: string, cfg: Config): string {
   let out = text
   if (cfg.emails && out.includes('@')) {
     out = out.replace(EMAIL, address => (allowedEmail(address, cfg) || cfg.allow.has(address) ? address : mint('EMAIL', address)))
   }
-  out = out.replace(IPV4, address => {
-    if (cfg.allow.has(address) || (!cfg.privateIps && isPrivateV4(address))) return address
+  out = out.replace(IPV4, (address, offset, whole) => {
+    if (cfg.allow.has(address) || isLoopbackV4(address)) return address
+    if (!cfg.privateIps && isPrivateV4(address)) return address
+    if (cfg.allowLocalUrls && isPrivateV4(address) && inUrlHost(whole, offset, address.length)) return address
     return mint('IP', address)
   })
-  return out.replace(IPV6, address => {
-    if (cfg.allow.has(address)) return address
-    const lower = address.toLowerCase()
-    if (!cfg.privateIps && (lower.startsWith('fe80:') || lower.startsWith('fc') || lower.startsWith('fd'))) return address
+  return out.replace(IPV6, (address, offset, whole) => {
+    if (cfg.allow.has(address) || isLoopbackV6(address)) return address
+    if (!cfg.privateIps && isPrivateV6(address)) return address
+    if (cfg.allowLocalUrls && isPrivateV6(address) && inUrlHost(whole, offset, address.length)) return address
     return mint('IP', address)
   })
 }
@@ -1622,6 +1651,7 @@ export function makeConfig(options: Record<string, unknown>): Config {
     pii: bool(options.pii, false),
     emails: bool(options.hideEmails, true),
     privateIps: bool(options.redactPrivateIps, false),
+    allowLocalUrls: bool(options.allowLocalUrls, true),
     pl: bool(options.pl, true),
     plPersonal: bool(options.personalData, true),
     plInfra: bool(options.infrastructure, true),

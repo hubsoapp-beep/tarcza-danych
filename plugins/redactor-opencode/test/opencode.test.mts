@@ -62,6 +62,16 @@ assert.ok(!promptEvent.prompt.text.includes(SECRET), 'prompt: key is gone')
 assert.match(promptEvent.prompt.text, /\[REDACTED-HASLO-[0-9a-f]{8}\]/)
 const keyTag = promptEvent.prompt.text.match(/\[REDACTED-SECRET-[0-9a-f]{8}\]/)![0]
 
+// A local server link is not a secret. The model has to be able to repeat it.
+const zero = ['0', '0', '0', '0'].join('.')
+const loop = ['127', '0', '0', '1'].join('.')
+const lan = ['192', '168', '1', '10'].join('.')
+for (const url of [`http://${zero}:8096`, `http://${loop}:8096`, `http://${lan}:8096`]) {
+  const event = { prompt: { text: `Otwórz ${url}` } }
+  await session('prompt')(event)
+  assert.equal(event.prompt.text, `Otwórz ${url}`, `prompt keeps ${url}`)
+}
+
 // The context hook is the last line before the provider: a message the prompt
 // hook never saw is still scanned, and a tool result is scanned too.
 const contextEvent = {

@@ -98,6 +98,7 @@ Wszystkie opcje są opcjonalne. Domyślne wartości są takie jak w `redactor-pl
 | `pii` | `true` | E-maile i adresy IP. |
 | `hideEmails` | `true` | Z `pii`: ukrywaj też e-maile. |
 | `redactPrivateIps` | `true` | Ukrywaj też IP z sieci lokalnej. |
+| `allowLocalUrls` | `true` | Nie ukrywaj prywatnego IP, gdy jest hostem URL-a (`http://<ip>:8096`). Sam adres w prozie nadal jest ukrywany. `0.0.0.0`, `127.0.0.1`, `::1` i `localhost` są zawsze zostawiane. |
 | `restoreInToolInputs` | `true` | Wstawiaj prawdziwe wartości do narzędzi lokalnych. |
 | `restoreTools` | `shell,write,edit,patch` | Narzędzia, które dostają prawdziwą wartość. Nie dopisuj narzędzi wysyłających dane do sieci. |
 | `notify` | `true` | Log przy starcie sejfu i przy ukryciu wartości. |

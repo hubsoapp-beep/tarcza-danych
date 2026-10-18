@@ -1,7 +1,7 @@
 {
   "$schema": "https://anthropic.com/claude-code/plugin.schema.json",
   "name": "redactor-pl",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Tarcza danych: podmienia hasła, klucze, dane osobowe PL i dane serwerów na placeholdery, zanim trafią do AI. Fork transcript-redactor 0.4.1 z warstwą polską, sejfem z notatek i panelem.",
   "author": {
     "name": "Miłosz Zając"
@@ -29,6 +29,12 @@
       "type": "boolean",
       "title": "Hide private IP addresses",
       "description": "Ukryj też adresy IP z sieci lokalnej (10.x, 192.168.x)",
+      "default": true
+    },
+    "allowLocalUrls": {
+      "type": "boolean",
+      "title": "Keep local server links",
+      "description": "Nie ukrywaj prywatnego adresu IP, gdy jest hostem URL-a (http://<ip>:8096). Sam adres w prozie nadal jest ukrywany.",
       "default": true
     },
     "restoreInToolInputs": {

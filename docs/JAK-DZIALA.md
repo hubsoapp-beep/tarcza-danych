@@ -129,7 +129,15 @@ JWT, klucze prywatne PEM), wysokie entropie, tokeny po nazwach (`API_KEY=`,
 - **Dane osobowe z sumą kontrolną**: PESEL, NIP, REGON, dowód, IBAN, karta
   (Luhn), telefon. Losowy ciąg cyfr nie jest ukrywany.
 - **Infrastruktura**: loginy (`Użytkownik:`, `user@host`, `--user=`), domeny
-  (`Domena:`, `--domain=`), adresy IP.
+  (`Domena:`, `--domain=`), adresy IP. `0.0.0.0`, `127.0.0.1`, `::1` i
+  `localhost` są zawsze zostawiane: to adresy bind/loopback, nie sekrety.
+  Prywatny adres IP w roli hosta URL-a (`http://<ip>:8096`) też zostaje, gdy
+  `allowLocalUrls` jest włączone (domyślnie); ten sam adres w prozie nadal jest
+  ukrywany.
+- **Link lokalnego serwera**: `0.0.0.0` to adres bind („wszystkie interfejsy”),
+  nie adres do przeglądarki. W przeglądarce wpisz `http://localhost:<port>`.
+  Plugin zostawia `localhost`, `127.0.0.1` i `0.0.0.0`, żeby model mógł podać
+  działający link.
 - **Słownik**: `KLIENT: Kancelaria Nowak`, `OSOBA: Jan* Kowalsk*`. Gwiazdka
   podstawia polskie końcówki.
 - **Nauka z notatek**: przy starcie sesji hasła, loginy i domeny z wybranych

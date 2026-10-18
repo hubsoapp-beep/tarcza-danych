@@ -59,6 +59,7 @@ Fałszywa notatka do wklejenia w prompt: `node --experimental-strip-types test/d
 | `infrastructure`, `logins`, `domains` | tak | loginy i domeny |
 | `pii` | tak | e-maile i adresy IP |
 | `redactPrivateIps` | tak | także IP z sieci lokalnej |
+| `allowLocalUrls` | tak | nie ukrywaj prywatnego IP, gdy jest hostem URL-a (`http://<ip>:8096`); sam adres w prozie nadal jest ukrywany. `0.0.0.0`, `127.0.0.1`, `::1` i `localhost` są zawsze zostawiane |
 | `vaultSources` | puste | notatki do nauki przy starcie |
 | `glossaryFile` | `~/.claude/redactor-pl/slownik.txt` | słownik |
 | `restoreTools` | `Bash,Write,Edit,MultiEdit,NotebookEdit` | narzędzia, które dostają prawdziwe wartości |
