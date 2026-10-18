@@ -1,0 +1,52 @@
+{
+  "modelProviders": {
+    "openai": [
+      {
+        "id": "qwen3-coder-plus",
+        "name": "Qwen via Tarcza",
+        "baseUrl": "http://127.0.0.1:8787/v1",
+        "envKey": "TARCZA_LOCAL_KEY",
+        "wireApi": "chat-completions"
+      }
+    ]
+  },
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "name": "tarcza-session-start",
+            "type": "command",
+            "command": "node --experimental-strip-types /ABS/PATH/TO/tarcza-danych/adapters/qwen/hook.ts session-start",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "run_shell_command|write_file|replace|read_file",
+        "hooks": [
+          {
+            "name": "tarcza-pre-tool",
+            "type": "command",
+            "command": "node --experimental-strip-types /ABS/PATH/TO/tarcza-danych/adapters/qwen/hook.ts pre-tool",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "name": "tarcza-user-prompt",
+            "type": "command",
+            "command": "node --experimental-strip-types /ABS/PATH/TO/tarcza-danych/adapters/qwen/hook.ts user-prompt",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  }
+}

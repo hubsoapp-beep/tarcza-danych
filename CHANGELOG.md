@@ -1,5 +1,24 @@
 # Changelog
 
+Wersje dotyczą całego repozytorium; w nagłówku podano wersje pluginów.
+
+## 0.5.0 — 2026-10-18
+
+OpenCode `0.2.2` · Claude Code `0.1.2` · Grok `0.1.0` · Gemini `0.1.0` · Qwen `0.1.0` · proxy `0.1.0`
+
+Qwen Code i generic proxy.
+
+- **Qwen Code** (`adapters/qwen`): `PreToolUse` przywraca wartości w lokalnych
+  narzędziach, `UserPromptSubmit` może zablokować prompt z sekretem. Qwen nie
+  ma `BeforeModel`, więc prompt i wyniki narzędzi redaguje proxy w następnym
+  requestcie.
+- **Generic proxy** (`adapters/proxy`): jeden OpenAI-compatible endpoint dla
+  Qwen, Codex, Cline/Roo, Continue, Aider, Goose/Crush/OpenHands. Redaction
+  only, bez restore, jeśli agent nie ma hooka.
+- Proxy i hooki nadal dzielą wspólny daemon (`adapters/shared`), token i sejf.
+- Testy Qwen (`adapters/qwen/test/hooks.test.mts`) i job CI `qwen-tests`.
+- `docs/AGENCI.md` i `ROADMAP.md`: Qwen jako MVP, generic proxy jako Agent N.
+
 ## 0.4.0 — 2026-10-18
 
 OpenCode `0.2.2` · Claude Code `0.1.2` · Grok adapter `0.1.0` · Gemini adapter `0.1.0`
@@ -20,7 +39,6 @@ Adapter Gemini CLI i wspólny daemon dla adapterów.
 - `docs/AGENCI.md` i `ROADMAP.md`: Gemini oznaczone jako MVP, Qwen Code jako
   następny krok.
 
-Wersje dotyczą całego repozytorium; w nagłówku podano wersje pluginów.
 
 ## 0.3.0 — 2026-10-18
 

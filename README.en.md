@@ -38,8 +38,9 @@ The script adds the plugin to `~/.config/opencode/opencode.json`. Details and li
 - **Grok Build** — MVP: local proxy + `PreToolUse`/`PostToolUse` hooks:
   [adapters/grok/README.md](adapters/grok/README.md).
 - **Gemini CLI** — MVP: `BeforeModel`, `BeforeTool`, `AfterTool`, `AfterModel`:
-  [adapters/gemini/README.md](adapters/gemini/README.md). Qwen Code next.
-- **Codex CLI / Cline / Aider / Continue** — generic proxy, redaction only.
+  [adapters/gemini/README.md](adapters/gemini/README.md).
+- **Qwen Code** — MVP: proxy + `PreToolUse`: [adapters/qwen/README.md](adapters/qwen/README.md).
+- **Codex CLI / Cline / Aider / Continue** — generic proxy: [adapters/proxy/README.md](adapters/proxy/README.md).
 
 Capability matrix: [docs/AGENCI.md](docs/AGENCI.md). Order: [ROADMAP.md](ROADMAP.md).
 

@@ -260,6 +260,12 @@ adapters/gemini/                   Gemini CLI (MVP)
   run.ts                           start wspólnego daemona
   hook.ts                          BeforeModel / BeforeTool / AfterTool / AfterModel
 
+adapters/qwen/                     Qwen Code (MVP)
+  hook.ts                          PreToolUse / UserPromptSubmit
+
+adapters/proxy/                    generic OpenAI-compatible proxy
+  run.ts                           start wspólnego daemona
+
 scripts/install.sh                 instalacja Claude Code
 scripts/install-opencode.sh        wpis do ~/.config/opencode/opencode.json
 docs/AGENCI.md                     macierz agentów i adapterów

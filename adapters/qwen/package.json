@@ -1,0 +1,13 @@
+{
+  "name": "tarcza-qwen",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Tarcza danych dla Qwen Code: proxy OpenAI-compatible + PreToolUse restore.",
+  "type": "module",
+  "scripts": {
+    "test": "node --experimental-strip-types test/hooks.test.mts"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}

@@ -269,8 +269,10 @@ nie kopiuje detektorów.
 - sprawdzić, czy Gemini zapisuje prompt przed `BeforeModel`; jeśli tak —
   opisać ograniczenie albo dodać wrapper,
 - lepszy kształt `AfterTool` (jeśli API pozwoli podmienić obiekt, nie tylko
-  `reason`),
-- Qwen Code na tych samych hookach.
+  `reason`).
+
+Qwen Code okazał się **nie** być prostym klonem hooków Gemini: nie ma
+`BeforeModel`, więc dostał proxy + `PreToolUse` (Agent N).
 
 **Zakres:**
 - `BeforeModel` → `scrubAll(messages)`,
@@ -278,16 +280,21 @@ nie kopiuje detektorów.
 - `AfterTool` → scrub/replace `tool_response`,
 - `AfterModel` → redakcja chunków odpowiedzi,
 - `SessionStart` → sejf,
-- Qwen Code po Gemini, jeśli hooki są te same.
 
 **Akceptacja:** testy na fixture'ach hooków; brak regresji w Claude/OpenCode.
 
-### Agent N — generic proxy
+### Agent N — generic proxy 🟡 MVP
 
 **Cel:** jedno proxy dla agentów bez hooków.
 
-**Zakres:**
-- OpenAI Chat Completions, Responses, Anthropic Messages, Gemini,
+**Zrobione:**
+- OpenAI Chat Completions dla Qwen, Codex, Cline/Roo, Continue, Aider,
+  Goose/Crush/OpenHands,
+- Qwen Code `PreToolUse` i proxy,
+- testy Qwen i proxy.
+
+**Do zrobienia:**
+- OpenAI Responses i Anthropic Messages,
 - Codex CLI, Cline/Roo/Kilo, Continue, Aider, Goose, Crush, OpenHands,
 - streaming SSE i tool_calls,
 - jasny komunikat: „redaction only, bez restore”, jeśli agent nie ma hooka,
@@ -306,8 +313,8 @@ E (macierz) ── H (npm/Git)
 F (fuzz) ── G (audyt)
 J (polityki) — po G
 K (core + daemon) ──┬── L (Grok)
-                    ├── M (Gemini / Qwen)
-                    └── N (generic proxy: Codex, Cline, Aider, …)
+                    ├── M (Gemini)
+                    └── N (generic proxy: Qwen, Codex, Cline, Aider, …)
 ```
 
 Rekomendowana kolejność dla jednego agenta:

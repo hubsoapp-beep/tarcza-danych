@@ -11,7 +11,7 @@ agent potrafi i czego mu brakuje. Stan na `0.4.0`.
 | **OpenCode** | hook `prompt` | `execute.before` | `execute.after` | chroniony przed zapisem | ✅ `0.2.2` |
 | **Grok Build** | proxy `base_url` | `PreToolUse` | `PostToolUse` | **może zachować oryginał** | 🟡 MVP `0.1.0` |
 | **Gemini CLI** | `BeforeModel` | `BeforeTool` | `AfterTool` / `AfterModel` | zależnie od hooka | 🟡 MVP `0.1.0` |
-| **Qwen Code** | jak Gemini | jak Gemini | jak Gemini | j.w. | ⬜ po Gemini |
+| **Qwen Code** | proxy `baseUrl` | `PreToolUse` | proxy (następny request) | może zachować oryginał | 🟡 MVP `0.1.0` |
 | **Codex CLI** | proxy | ❌ | proxy (następny request) | może zachować oryginał | ⬜ |
 | **Cline / Roo / Kilo** | proxy | ❌ | proxy | może zachować oryginał | ⬜ |
 | **Continue.dev** | proxy | ❌ | proxy | może zachować oryginał | ⬜ |
@@ -70,7 +70,20 @@ Gemini CLI ma najpełniejszy zestaw hooków:
 To pozwala zrobić pełny parytet bez proxy. Kod:
 [`adapters/gemini`](../adapters/gemini/README.md). `AfterTool` używa
 `decision: "deny"` + `reason`, więc wynik jest tekstem; to ograniczenie API.
-Qwen Code jest forkiem Gemini CLI, więc po Gemini adapter powinien być tani.
+Qwen Code jest forkiem Gemini CLI, ale ma hooki w stylu Claude i nie ma `BeforeModel`; dlatego korzysta z proxy (patrz niżej).
+
+## Adapter Qwen Code
+
+Qwen ma hooki w stylu Claude, ale **bez `BeforeModel`**. Dlatego:
+
+- prompt i wyniki narzędzi redaguje proxy (`modelProviders.openai.baseUrl`),
+- `PreToolUse` przywraca wartości w `run_shell_command`, `write_file`,
+  `replace`, `read_file`,
+- `PostToolUse` nie podmienia wyniku — proxy robi to w następnym requestcie,
+- `UserPromptSubmit` może tylko zablokować prompt (`TARCZA_BLOCK_PROMPTS=1`).
+
+Kod: [`adapters/qwen`](../adapters/qwen/README.md). Proxy:
+[`adapters/proxy`](../adapters/proxy/README.md).
 
 ## Kontrakt adaptera
 

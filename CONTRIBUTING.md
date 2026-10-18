@@ -44,4 +44,7 @@ node --experimental-strip-types test/proxy.test.mts
 
 cd adapters/gemini
 node --experimental-strip-types test/hooks.test.mts
+
+cd adapters/qwen
+node --experimental-strip-types test/hooks.test.mts
 ```
