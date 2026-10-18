@@ -1,64 +1,79 @@
 # Changelog
 
-## 0.2.2
+Wersje dotyczą całego repozytorium; w nagłówku podano wersje obu pluginów.
 
-The allow list now works everywhere.
+## 0.2.2 — 2026-10-18
 
-- `allow`, `allowPrefixes` and `allowEmails` override the Polish layer too:
-  passwords, logins, domains, personal numbers, the glossary and values learned
-  from notes. Before, `allow` only affected the upstream secret/PII scan, so a
-  value explicitly marked as public could still become `HASLO`/`DOMENA`/`LOGIN`.
-- A glossary domain inside an allowed address (`jan@example.com`) stays when the
-  address is allowed by `allowEmails` or `allow`.
-- An allowed value is not learned from the vault, so it stays bare later.
-- Tests: `plugins/redactor-opencode/test/allow.test.mts` and the same test in
+OpenCode `0.2.2` · Claude Code `0.1.2`
+
+`allow` działa teraz wszędzie, nie tylko w silniku sekretów.
+
+- `allow`, `allowPrefixes` i `allowEmails` są nadrzędne wobec warstwy polskiej:
+  haseł, loginów, domen, numerów, słownika i wartości nauczonych z notatek.
+  Wcześniej wartość oznaczona jako publiczna mogła nadal zostać podmieniona na
+  `HASLO`, `DOMENA` albo `LOGIN`.
+- Domena ze słownika wewnątrz dozwolonego adresu (`jan@example.com`) zostaje,
+  gdy adres jest dozwolony przez `allowEmails` albo `allow`.
+- Dozwolona wartość nie jest uczona z sejfu, więc później nie wraca jako ukryta.
+- Testy: `plugins/redactor-opencode/test/allow.test.mts` oraz
   `plugins/redactor-pl/test/allow.test.mts`.
-- Plugin versions: OpenCode `0.2.2`, Claude Code `0.1.2`.
 
-## 0.2.1
+## 0.2.1 — 2026-10-18
 
-Fix for local server links.
+OpenCode `0.2.1` · Claude Code `0.1.1`
 
-- `0.0.0.0`, `127.0.0.1`, `::1` and `localhost` are never hidden: they are bind
-  and loopback addresses, not infrastructure secrets.
-- A private IP used as a URL host (`http://<ip>:8096`) stays readable by default
-  (`allowLocalUrls: true`), so the model can give a link that works. The same IP
-  in prose is still hidden; set `allowLocalUrls: false` to hide it everywhere.
-- New option in `plugins/redactor-pl/.claude-plugin/plugin.json` and
-  `plugins/redactor-opencode/config.ts`; tests in both plugins.
-- The failure mode was: a bind address was hidden, the tool output turned the
-  placeholder into `LITERAL`, and the model repeated `http://[REDACTED-LITERAL-…]:8096`.
+Lokalne linki do serwera są użyteczne.
 
-## 0.2.0
+- `0.0.0.0`, `127.0.0.1`, `::1` i `localhost` nigdy nie są ukrywane: to adresy
+  bind/loopback, nie sekrety infrastruktury.
+- Prywatny IP użyty jako host URL-a (`http://<ip>:8096`) zostaje domyślnie
+  widoczny (`allowLocalUrls: true`), żeby link dało się otworzyć. Ten sam IP w
+  prozie nadal jest ukrywany; `allowLocalUrls: false` ukrywa go wszędzie.
+- Nowa opcja w `plugins/redactor-pl/.claude-plugin/plugin.json` i
+  `plugins/redactor-opencode/config.ts`.
+- Testy `local-urls` w obu pluginach.
+- Naprawiany tryb awarii: adres bind był ukrywany, wynik narzędzia zamieniał
+  placeholder na `LITERAL`, a model powtarzał
+  `http://[REDACTED-LITERAL-…]:8096`.
 
-OpenCode port.
+## 0.2.0 — 2026-10-18
 
-- `plugins/redactor-opencode`: the same detection engine and Polish layer as `redactor-pl`,
-  wired to OpenCode 2.0.32+ hooks: prompt, context, compaction, generate, title,
-  tool `execute.before` / `execute.after`.
-- Local tools (`shell`, `write`, `edit`, `patch`) get real values back; their output is
-  scrubbed again, including values this call was handed.
-- Vault from notes and the glossary work in OpenCode. Values stay in memory.
-- Commands in the TUI: `/redact-demo`, `/redact-test`, `/redactions` (counts per category).
-- Fail closed: a scan that fails or runs past its budget withholds the text instead of
-  passing it on.
-- Shared engine tests plus `test/opencode.test.mts` for the OpenCode wiring.
-- `scripts/install-opencode.sh` adds the plugin to `~/.config/opencode/opencode.json`.
-- `docs/JAK-DZIALA.md` (flow, hooks, fail-closed, file map) and `ROADMAP.md`
-  (next tasks with agent briefs and acceptance criteria).
-- Local server links stay usable: `0.0.0.0`, `127.0.0.1`, `::1` and `localhost`
-  are never hidden; a private IP as a URL host is kept by default
-  (`allowLocalUrls`), while the same IP in prose is still hidden.
+OpenCode `0.2.0` · Claude Code `0.1.0` (bez zmian)
 
-## 0.1.0
+Port Tarczy danych na OpenCode.
 
-First public release. Fork of transcript-redactor 0.4.1.
+- `plugins/redactor-opencode`: ten sam silnik detekcji i warstwa polska co
+  `redactor-pl`, podpięte do hooków OpenCode 2.0.32+: prompt, context,
+  compaction, generate, title, tool `execute.before` / `execute.after`.
+- Narzędzia lokalne (`shell`, `write`, `edit`, `patch`) dostają prawdziwe
+  wartości; ich wynik jest skanowany ponownie, także wartości przekazane w tym
+  wywołaniu.
+- Sejf z notatek i słownik działają w OpenCode. Wartości zostają w pamięci.
+- Komendy w TUI: `/redact-demo`, `/redact-test`, `/redactions` (liczniki wg
+  kategorii).
+- Fail-closed: błąd skanu albo przekroczenie budżetu wstrzymuje tekst zamiast
+  przepuszczać oryginał.
+- Wspólne testy silnika oraz `test/opencode.test.mts` dla podpięcia OpenCode.
+- `scripts/install-opencode.sh` dopisuje plugin do
+  `~/.config/opencode/opencode.json`.
+- Dokumentacja: `docs/JAK-DZIALA.md` (przepływ, hooki, fail-closed, mapa
+  plików) i `ROADMAP.md` (kolejni agenci, kryteria akceptacji).
 
-- Polish and English password labels, including Markdown bold, tables and backticks.
-- Polish personal data with checksums: PESEL, NIP, REGON, ID card, IBAN, card (Luhn), phone.
-- Infrastructure: IP addresses, logins, domains.
-- Vault: reads chosen notes at session start and hides every password, login and domain found there.
-- Glossary file with inflection (`Kowalsk*`).
-- Pane "Tarcza danych" with counts per category and masked values, projector mode.
-- Commands `/redactions`, `/redact-demo`, `/redact-test`.
-- Fix: a command that exits non-zero and prints a secret no longer fails with `output shape`.
+## 0.1.0 — 2026-10-17
+
+Claude Code `0.1.0`
+
+Pierwsze publiczne wydanie. Fork transcript-redactor 0.4.1.
+
+- Polskie i angielskie etykiety haseł, w tym Markdown bold, tabele i backticki.
+- Polskie dane osobowe z sumami kontrolnymi: PESEL, NIP, REGON, dowód, IBAN,
+  karta (Luhn), telefon.
+- Infrastruktura: adresy IP, loginy, domeny.
+- Sejf: czyta wybrane notatki przy starcie sesji i ukrywa każde hasło, login i
+  domenę znalezione w notatkach.
+- Słownik z odmianą (`Kowalsk*`).
+- Panel „Tarcza danych” z licznikami na kategorię, maskami wartości i trybem
+  projektora.
+- Komendy `/redactions`, `/redact-demo`, `/redact-test`.
+- Poprawka: komenda, która kończy się błędem i wypisuje sekret, nie wywraca się
+  już na kształcie wyniku.
