@@ -10,3 +10,7 @@ entropy, placeholders) and the hook structure in `hooks/redact.ts`.
 What was added here: the Polish layer (`hooks/pl.ts`), the vault that learns from notes
 (`hooks/vault.ts`), the glossary, the pane and commands (`hooks/pane.tsx`, `hooks/ledger.ts`),
 the fix for the errored-command result shape, and the tests for them.
+
+The OpenCode port (`plugins/redactor-opencode`) reuses the same engine
+(`detect.ts`, `pl.ts`) under the MIT license and wires it to OpenCode's plugin hooks
+(`index.ts`, `config.ts`, `scrub.ts`, `vault.ts`, `stats.ts`, `demo.ts`).

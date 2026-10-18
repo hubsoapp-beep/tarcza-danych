@@ -9,11 +9,13 @@ in many places, rotate any secret that has already been sent.
 ## Known limits
 
 - Images, screenshots and PDFs are not scanned.
-- Old session files in `~/.claude/projects/` keep what was sent before the mod was installed.
-- `Bash` gets real values back, in any command, including one that sends them to another host.
-- `Write` and `Edit` can write a real value to disk.
+- Old session files in `~/.claude/projects/` and `~/.local/share/opencode/` keep what was sent before the mod was installed.
+- `Bash` (Claude Code) and `shell` (OpenCode) get real values back, in any command, including one that sends them to another host.
+- `Write`/`Edit` (Claude Code) and `write`/`edit`/`patch` (OpenCode) can write a real value to disk.
 - A password typed as a plain word, with no label, passes unless the vault or the glossary knows it.
 - Names and addresses in free text are found only through the glossary.
+- The OpenCode port has no pane; counts are available through `/redactions`. OpenCode also does not dispatch plugin slash commands in `opencode run`, only in the TUI.
+- OpenCode plugin hooks are the API of a specific OpenCode version. A hook that OpenCode renames or removes stops redacting; keep OpenCode and the plugin in step.
 
 ## Reporting a vulnerability
 

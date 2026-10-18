@@ -24,3 +24,14 @@ claude plugin test .
 ```
 
 The last two need Claude Code. CI runs the first five.
+
+The OpenCode port shares the engine and adds a wiring test:
+
+```
+cd plugins/redactor-opencode
+npm install
+CI=1 npm test
+```
+
+CI runs that job too. Set `CI=1` locally if your machine is slower than the timing budget;
+the budget is wider on a shared runner.

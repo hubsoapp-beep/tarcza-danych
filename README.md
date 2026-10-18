@@ -3,7 +3,7 @@
 [![ci](https://github.com/hubsoapp-beep/tarcza-danych/actions/workflows/ci.yml/badge.svg)](https://github.com/hubsoapp-beep/tarcza-danych/actions/workflows/ci.yml)
 [![licencja: MIT](https://img.shields.io/badge/licencja-MIT-blue.svg)](LICENSE)
 
-Mod do [Claude Code](https://claude.com/claude-code), który **ukrywa hasła i dane poufne przed AI**. Zanim tekst trafi do modelu, mod podmienia wartość na placeholder (`[REDACTED-HASLO-1a2b3c4d]`). Model pracuje na placeholderach. Gdy komenda ma się wykonać na Twoim komputerze, mod wraca do prawdziwej wartości.
+Mod do [Claude Code](https://claude.com/claude-code) i [OpenCode](https://opencode.ai), który **ukrywa hasła i dane poufne przed AI**. Zanim tekst trafi do modelu, mod podmienia wartość na placeholder (`[REDACTED-HASLO-1a2b3c4d]`). Model pracuje na placeholderach. Gdy komenda ma się wykonać na Twoim komputerze, mod wraca do prawdziwej wartości.
 
 *English: see [README.en.md](README.en.md).*
 
@@ -33,6 +33,12 @@ Panel zaraz po starcie sesji, zanim cokolwiek zostanie ukryte:
 
 Pełny opis, ustawienia i różnice względem upstream: [plugins/redactor-pl/README.md](plugins/redactor-pl/README.md).
 
+## Jak działa
+
+Tekst przechodzi przez trzy warstwy: prompt → kontekst sesji → request do modelu. Każda wartość dostaje stabilny placeholder (`[REDACTED-HASLO-1a2b3c4d]`). Przed narzędziem lokalnym placeholder wraca do prawdziwej wartości, a wynik narzędzia jest skanowany ponownie. Ostatnia warstwa (`context`) skanuje **każdy** request, więc nawet tekst z nieznanego źródła nie wychodzi bez sprawdzenia.
+
+Diagram przepływu, mapa plików, detektory, fail-closed i różnice Claude Code vs OpenCode: [docs/JAK-DZIALA.md](docs/JAK-DZIALA.md).
+
 ## Instalacja (na każdym komputerze)
 
 Potrzebujesz Claude Code. Dwie komendy:
@@ -52,7 +58,35 @@ Zrestartuj Claude Code i wpisz `/redact-demo`. Aktualizacja: `claude plugin mark
 
 > Jeśli używasz `transcript-redactor` albo `redaction-pane`, wyłącz je. Ta wersja zawiera oba i dwa redaktory naraz mogłyby się pokłócić.
 
-## Komendy
+## OpenCode
+
+Ta sama tarcza działa też w [OpenCode](https://opencode.ai) 2.0.32+. Silnik redakcji i warstwa polska są te same; różnią się hooki i brakuje panelu (jest licznik `/redactions`).
+
+```sh
+git clone https://github.com/hubsoapp-beep/tarcza-danych.git
+cd tarcza-danych
+./scripts/install-opencode.sh
+```
+
+Skrypt dopisuje plugin do `~/.config/opencode/opencode.json`. Ręcznie wygląda to tak:
+
+```jsonc
+{
+  "plugins": [
+    {
+      "package": "/pełna/ścieżka/do/tarcza-danych/plugins/redactor-opencode",
+      "options": {
+        "vaultSources": "~/Notatki/serwery",
+        "glossaryFile": "~/.claude/redactor-pl/slownik.txt"
+      }
+    }
+  ]
+}
+```
+
+Zrestartuj OpenCode. Szczegóły, opcje i ograniczenia: [plugins/redactor-opencode/README.md](plugins/redactor-opencode/README.md).
+
+## Komendy (Claude Code)
 
 | Komenda | Co robi |
 | --- | --- |
@@ -60,13 +94,19 @@ Zrestartuj Claude Code i wpisz `/redact-demo`. Aktualizacja: `claude plugin mark
 | `/redact-test <tekst>` | Sprawdza, co zobaczy AI, bez wysyłania. |
 | `/redactions` | Otwiera panel. `projector on` / `projector off` chowa i pokazuje maski. |
 
+W OpenCode te same trzy komendy działają w TUI; `/redactions` pokazuje licznik zamiast panelu. `opencode run` nie dispatchuje komend pluginów.
+
 ## Dane prywatne zostają u Ciebie
 
-W repozytorium nie ma żadnych prawdziwych danych. Twoje notatki (sejf) i słownik czyta mod lokalnie, z miejsc, które sam wskażesz: `/plugin configure redactor-pl@tarcza-danych`. Słownik trzymaj w `~/.claude/redactor-pl/slownik.txt`, poza repozytorium. Wzór: [plugins/redactor-pl/slownik.example.txt](plugins/redactor-pl/slownik.example.txt). Wartości z notatek żyją tylko w pamięci procesu i nie trafiają na dysk ani do logów.
+W repozytorium nie ma żadnych prawdziwych danych. Twoje notatki (sejf) i słownik czyta mod lokalnie, z miejsc, które sam wskażesz: `/plugin configure redactor-pl@tarcza-danych` w Claude Code, opcje `vaultSources` i `glossaryFile` w `opencode.json` w OpenCode. Słownik trzymaj w `~/.claude/redactor-pl/slownik.txt`, poza repozytorium. Wzór: [plugins/redactor-pl/slownik.example.txt](plugins/redactor-pl/slownik.example.txt). Wartości z notatek żyją tylko w pamięci procesu i nie trafiają na dysk ani do logów.
 
 ## Rozwój
 
 Zasady i uruchamianie testów: [CONTRIBUTING.md](CONTRIBUTING.md). Zmiany: [CHANGELOG.md](CHANGELOG.md).
+
+## Roadmapa
+
+Co dalej, w podziale na agentów i z kryteriami akceptacji: [ROADMAP.md](ROADMAP.md). Najbliższe zadania to panel TUI, liczniki per sesja, załączniki, macierz zgodności OpenCode, fuzz/audyt i publikacja npm.
 
 ## Licencja
 

@@ -1,0 +1,30 @@
+{
+  "name": "redactor-opencode",
+  "version": "0.2.0",
+  "description": "Tarcza danych dla OpenCode: ukrywa klucze, hasła, dane osobowe PL i infrastrukturę przed modelem, a w lokalnych narzędziach przywraca prawdziwe wartości.",
+  "type": "module",
+  "main": "index.ts",
+  "license": "MIT",
+  "files": [
+    "index.ts",
+    "config.ts",
+    "detect.ts",
+    "scrub.ts",
+    "pl.ts",
+    "vault.ts",
+    "stats.ts",
+    "demo.ts",
+    "README.md",
+    "LICENSE.upstream"
+  ],
+  "scripts": {
+    "test": "node --experimental-strip-types test/detect.test.mts && node --experimental-strip-types test/pl.test.mts && node --experimental-strip-types test/random-tags.test.mts && node --experimental-strip-types test/session-privacy.test.mts && node --experimental-strip-types test/pii-options.test.mts && node --experimental-strip-types test/vault.test.mts && node --experimental-strip-types test/opencode.test.mts",
+    "test:plugin": "node --experimental-strip-types test/opencode.test.mts"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "dependencies": {
+    "@opencode/plugin": "^2.0.32"
+  }
+}
