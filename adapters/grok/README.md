@@ -27,7 +27,7 @@ tool call
 
 Proxy i hooki dzielą jeden proces (daemon), więc tag utworzony dla promptu jest
 tym samym tagiem, który hook przywraca w narzędziu. Wartości żyją tylko w
-pamięci procesu.
+pamięci procesu. Daemon jest wspólny z adapterem Gemini (`adapters/shared`).
 
 ## Instalacja
 
@@ -38,7 +38,7 @@ export TARCZA_UPSTREAM_KEY="$(cat ~/.xai-key)"
 
 # 2. Uruchom daemon (terminal albo usługa systemd/launchd).
 cd tarcza-danych/adapters/grok
-node --experimental-strip-types daemon.ts
+node --experimental-strip-types run.ts
 ```
 
 Daemon wypisze adres i utworzy `~/.tarcza/token` (0600). Token wklej do

@@ -1,0 +1,14 @@
+{
+  "name": "tarcza-gemini",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Tarcza danych dla Gemini CLI: hooki BeforeModel, BeforeTool, AfterTool i AfterModel.",
+  "type": "module",
+  "scripts": {
+    "daemon": "node --experimental-strip-types run.ts",
+    "test": "node --experimental-strip-types test/hooks.test.mts"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}

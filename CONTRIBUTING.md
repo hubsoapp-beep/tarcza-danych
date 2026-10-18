@@ -41,4 +41,7 @@ The Grok adapter has its own test:
 ```
 cd adapters/grok
 node --experimental-strip-types test/proxy.test.mts
+
+cd adapters/gemini
+node --experimental-strip-types test/hooks.test.mts
 ```

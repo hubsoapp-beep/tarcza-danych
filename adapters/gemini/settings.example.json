@@ -1,0 +1,77 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "name": "tarcza-session-start",
+            "type": "command",
+            "command": "node --experimental-strip-types /ABS/PATH/TO/tarcza-danych/adapters/gemini/hook.ts session-start",
+            "timeout": 10000
+          }
+        ]
+      }
+    ],
+    "BeforeModel": [
+      {
+        "hooks": [
+          {
+            "name": "tarcza-before-model",
+            "type": "command",
+            "command": "node --experimental-strip-types /ABS/PATH/TO/tarcza-danych/adapters/gemini/hook.ts before-model",
+            "timeout": 30000
+          }
+        ]
+      }
+    ],
+    "BeforeTool": [
+      {
+        "matcher": "run_shell_command|write_file|replace|read_file",
+        "hooks": [
+          {
+            "name": "tarcza-before-tool",
+            "type": "command",
+            "command": "node --experimental-strip-types /ABS/PATH/TO/tarcza-danych/adapters/gemini/hook.ts before-tool",
+            "timeout": 10000
+          }
+        ]
+      }
+    ],
+    "AfterTool": [
+      {
+        "hooks": [
+          {
+            "name": "tarcza-after-tool",
+            "type": "command",
+            "command": "node --experimental-strip-types /ABS/PATH/TO/tarcza-danych/adapters/gemini/hook.ts after-tool",
+            "timeout": 30000
+          }
+        ]
+      }
+    ],
+    "AfterModel": [
+      {
+        "hooks": [
+          {
+            "name": "tarcza-after-model",
+            "type": "command",
+            "command": "node --experimental-strip-types /ABS/PATH/TO/tarcza-danych/adapters/gemini/hook.ts after-model",
+            "timeout": 15000
+          }
+        ]
+      }
+    ],
+    "BeforeAgent": [
+      {
+        "hooks": [
+          {
+            "name": "tarcza-before-agent",
+            "type": "command",
+            "command": "node --experimental-strip-types /ABS/PATH/TO/tarcza-danych/adapters/gemini/hook.ts before-agent",
+            "timeout": 10000
+          }
+        ]
+      }
+    ]
+  }
+}

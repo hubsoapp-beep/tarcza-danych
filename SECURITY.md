@@ -17,6 +17,7 @@ in many places, rotate any secret that has already been sent.
 - Loopback and wildcard addresses (`0.0.0.0`, `127.0.0.1`, `::1`, `localhost`) are never hidden. A private address used as a URL host (`http://<ip>:8096`) is kept by default so a local server link stays usable; the same address in prose is still hidden. Set `allowLocalUrls: false` to hide it everywhere.
 - The OpenCode port has no pane; counts are available through `/redactions`. OpenCode also does not dispatch plugin slash commands in `opencode run`, only in the TUI.
 - OpenCode plugin hooks are the API of a specific OpenCode version. A hook that OpenCode renames or removes stops redacting; keep OpenCode and the plugin in step.
+- The Gemini CLI adapter redacts `BeforeModel` and `AfterModel`; `AfterTool` uses `decision: "deny"` with a text reason, which replaces a structured result for the model. Check whether Gemini stores the raw prompt before `BeforeModel`; the hook protects the request, not necessarily the local transcript.
 - The Grok Build adapter is a local proxy plus hooks. It protects the model request, but Grok's local scrollback/transcript may keep the original tool output; `PostToolUse` replaces only the model-facing copy. The proxy token is in `~/.tarcza/token` (0600), and the real upstream key is in `TARCZA_UPSTREAM_KEY`; treat both as secrets.
 
 ## Reporting a vulnerability

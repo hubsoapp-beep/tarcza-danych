@@ -1,7 +1,7 @@
 # Agenci i adaptery
 
 Jeden silnik redakcji, wiele cienkich adapterów. Ten dokument mówi, co który
-agent potrafi i czego mu brakuje. Stan na `0.3.0`.
+agent potrafi i czego mu brakuje. Stan na `0.4.0`.
 
 ## Macierz
 
@@ -10,7 +10,7 @@ agent potrafi i czego mu brakuje. Stan na `0.3.0`.
 | **Claude Code** | hook `prompt.submit` | `tool.call` | `tool.call` | chroniony przed zapisem | ✅ `0.1.2` |
 | **OpenCode** | hook `prompt` | `execute.before` | `execute.after` | chroniony przed zapisem | ✅ `0.2.2` |
 | **Grok Build** | proxy `base_url` | `PreToolUse` | `PostToolUse` | **może zachować oryginał** | 🟡 MVP `0.1.0` |
-| **Gemini CLI** | `BeforeModel` | `BeforeTool` | `AfterTool` / `AfterModel` | zależnie od hooka | ⬜ następny |
+| **Gemini CLI** | `BeforeModel` | `BeforeTool` | `AfterTool` / `AfterModel` | zależnie od hooka | 🟡 MVP `0.1.0` |
 | **Qwen Code** | jak Gemini | jak Gemini | jak Gemini | j.w. | ⬜ po Gemini |
 | **Codex CLI** | proxy | ❌ | proxy (następny request) | może zachować oryginał | ⬜ |
 | **Cline / Roo / Kilo** | proxy | ❌ | proxy | może zachować oryginał | ⬜ |
@@ -67,8 +67,10 @@ Gemini CLI ma najpełniejszy zestaw hooków:
 | `AfterModel` | zredagować chunk odpowiedzi |
 | `SessionStart` | załadować sejf |
 
-To pozwala zrobić pełny parytet bez proxy. Qwen Code jest forkiem Gemini CLI,
-więc po Gemini adapter powinien być tani.
+To pozwala zrobić pełny parytet bez proxy. Kod:
+[`adapters/gemini`](../adapters/gemini/README.md). `AfterTool` używa
+`decision: "deny"` + `reason`, więc wynik jest tekstem; to ograniczenie API.
+Qwen Code jest forkiem Gemini CLI, więc po Gemini adapter powinien być tani.
 
 ## Kontrakt adaptera
 

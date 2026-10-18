@@ -254,9 +254,23 @@ nie kopiuje detektorów.
 
 **Pliki:** `adapters/grok/*`.
 
-### Agent M — Gemini CLI
+### Agent M — Gemini CLI 🟡 MVP
 
 **Cel:** pełny parytet bez proxy.
+
+**Zrobione:**
+- `BeforeModel` → scrub `llm_request`,
+- `BeforeTool` → restore lokalnych narzędzi + blokada znaków powłoki,
+- `AfterTool` → `deny` z zredagowanym wynikiem,
+- `AfterModel` → scrub chunków,
+- testy `adapters/gemini/test/hooks.test.mts`.
+
+**Do zrobienia:**
+- sprawdzić, czy Gemini zapisuje prompt przed `BeforeModel`; jeśli tak —
+  opisać ograniczenie albo dodać wrapper,
+- lepszy kształt `AfterTool` (jeśli API pozwoli podmienić obiekt, nie tylko
+  `reason`),
+- Qwen Code na tych samych hookach.
 
 **Zakres:**
 - `BeforeModel` → `scrubAll(messages)`,

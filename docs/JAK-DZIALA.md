@@ -248,10 +248,17 @@ plugins/redactor-opencode/         OpenCode
   index.ts                         hooki OpenCode i komendy
   test/                            silnik + podpięcie + sejf
 
-adapters/grok/                     Grok Build (MVP)
-  daemon.ts                        proxy /v1 + /scrub + /restore + /stats
-  hook.ts                          PreToolUse / PostToolUse
+adapters/shared/                   wspólny daemon i token
+  daemon.ts                        /v1 proxy + /scrub + /restore + /stats
   token.ts                         ~/.tarcza/token (0600)
+
+adapters/grok/                     Grok Build (MVP)
+  run.ts                           start wspólnego daemona
+  hook.ts                          PreToolUse / PostToolUse
+
+adapters/gemini/                   Gemini CLI (MVP)
+  run.ts                           start wspólnego daemona
+  hook.ts                          BeforeModel / BeforeTool / AfterTool / AfterModel
 
 scripts/install.sh                 instalacja Claude Code
 scripts/install-opencode.sh        wpis do ~/.config/opencode/opencode.json

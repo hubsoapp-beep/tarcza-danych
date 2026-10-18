@@ -46,6 +46,17 @@ jobs:
         with:
           node-version: 24
       - run: node --experimental-strip-types test/proxy.test.mts
+  gemini-tests:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: adapters/gemini
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - run: node --experimental-strip-types test/hooks.test.mts
   no-real-secrets:
     runs-on: ubuntu-latest
     steps:

@@ -1,5 +1,25 @@
 # Changelog
 
+## 0.4.0 — 2026-10-18
+
+OpenCode `0.2.2` · Claude Code `0.1.2` · Grok adapter `0.1.0` · Gemini adapter `0.1.0`
+
+Adapter Gemini CLI i wspólny daemon dla adapterów.
+
+- **Gemini CLI** (`adapters/gemini`): `BeforeModel` redaguje cały
+  `llm_request`, `BeforeTool` przywraca wartości tylko w lokalnych narzędziach,
+  `AfterTool` ukrywa wynik przed modelem, `AfterModel` redaguje chunki
+  odpowiedzi. `SessionStart` sprawdza daemon; opcjonalny `BeforeAgent` blokuje
+  prompt z sekretem.
+- **Wspólny daemon** (`adapters/shared`): Grok i Gemini używają tych samych
+  endpointów `/scrub`, `/restore`, `/stats`; token i sejf są w jednym miejscu.
+- Grok dostał `run.ts` jako entrypoint; `adapters/grok/daemon.ts` jest już tylko
+  re-eksportem wspólnego daemona.
+- Testy Gemini: `adapters/gemini/test/hooks.test.mts`; CI ma job
+  `gemini-tests`.
+- `docs/AGENCI.md` i `ROADMAP.md`: Gemini oznaczone jako MVP, Qwen Code jako
+  następny krok.
+
 Wersje dotyczą całego repozytorium; w nagłówku podano wersje pluginów.
 
 ## 0.3.0 — 2026-10-18

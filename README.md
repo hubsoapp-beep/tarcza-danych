@@ -90,7 +90,8 @@ Zrestartuj OpenCode. Szczegóły, opcje i ograniczenia: [plugins/redactor-openco
 
 - **Grok Build** — MVP: lokalny proxy + hooki `PreToolUse`/`PostToolUse`:
   [adapters/grok/README.md](adapters/grok/README.md).
-- **Gemini CLI / Qwen Code** — następne, najlepsze hooki do pełnego parytetu.
+- **Gemini CLI** — MVP: `BeforeModel`, `BeforeTool`, `AfterTool`, `AfterModel`:
+  [adapters/gemini/README.md](adapters/gemini/README.md). Qwen Code — następny.
 - **Codex CLI / Cline / Aider / Continue** — generic proxy, redaction only.
 
 Macierz możliwości i różnice: [docs/AGENCI.md](docs/AGENCI.md). Kolejność:

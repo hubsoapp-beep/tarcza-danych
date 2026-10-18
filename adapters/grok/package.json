@@ -5,7 +5,7 @@
   "description": "Tarcza danych dla Grok Build: lokalny proxy OpenAI-compatible + hooki PreToolUse/PostToolUse.",
   "type": "module",
   "scripts": {
-    "daemon": "node --experimental-strip-types daemon.ts",
+    "daemon": "node --experimental-strip-types run.ts",
     "test": "node --experimental-strip-types test/proxy.test.mts"
   },
   "engines": {

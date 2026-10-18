@@ -78,7 +78,7 @@ async function handle(event: any): Promise<unknown | undefined> {
     const input = event.tool_input ?? event.toolInput ?? {}
     try {
       const restored = await call('/restore', { value: input })
-      if (tool === 'run_terminal_command' && Array.isArray(restored.restored) && restored.restored.some((value: string) => SHELL_ACTIVE.test(value))) {
+      if (tool === 'run_terminal_command' && Array.isArray(restored.values) && restored.values.some((value: string) => SHELL_ACTIVE.test(value))) {
         return {
           decision: 'deny',
           reason: '[tarcza] wartość ma znaki powłoki; zapisz ją do pliku i pozwól poleceniu przeczytać plik.',
