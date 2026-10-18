@@ -1,0 +1,14 @@
+{
+  "name": "tarcza-grok",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Tarcza danych dla Grok Build: lokalny proxy OpenAI-compatible + hooki PreToolUse/PostToolUse.",
+  "type": "module",
+  "scripts": {
+    "daemon": "node --experimental-strip-types daemon.ts",
+    "test": "node --experimental-strip-types test/proxy.test.mts"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}

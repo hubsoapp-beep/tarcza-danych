@@ -1,6 +1,25 @@
 # Changelog
 
-Wersje dotyczą całego repozytorium; w nagłówku podano wersje obu pluginów.
+Wersje dotyczą całego repozytorium; w nagłówku podano wersje pluginów.
+
+## 0.3.0 — 2026-10-18
+
+OpenCode `0.2.2` · Claude Code `0.1.2` · Grok adapter `0.1.0`
+
+Pierwszy adapter poza Claude Code i OpenCode.
+
+- **Grok Build** (`adapters/grok`): lokalny proxy OpenAI-compatible
+  (`chat_completions`) redaguje prompt i kontekst przed xAI; `PreToolUse`
+  przywraca wartości tylko w lokalnych narzędziach, `PostToolUse` ukrywa wynik
+  przed modelem. Proxy i hooki dzielą jeden daemon, więc tag z promptu jest tym
+  samym tagiem, który przywraca hook.
+- Token lokalny w `~/.tarcza/token` (0600), prawdziwy klucz upstreamu w
+  `TARCZA_UPSTREAM_KEY`; daemon słucha tylko `127.0.0.1`.
+- Testy adaptera: redakcja requestu, wspólne restore, scrub obiektu, auth i
+  kontrakt hooków (`adapters/grok/test/proxy.test.mts`).
+- `docs/AGENCI.md`: macierz prompt / restore / wynik / lokalny transkrypt dla
+  Claude Code, OpenCode, Grok, Gemini, Codex, Cline, Aider i innych.
+- `ROADMAP.md`: agenci K–N (core + daemon, Grok, Gemini/Qwen, generic proxy).
 
 ## 0.2.2 — 2026-10-18
 

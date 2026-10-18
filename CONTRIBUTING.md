@@ -35,3 +35,10 @@ CI=1 npm test
 
 CI runs that job too. Set `CI=1` locally if your machine is slower than the timing budget;
 the budget is wider on a shared runner.
+
+The Grok adapter has its own test:
+
+```
+cd adapters/grok
+node --experimental-strip-types test/proxy.test.mts
+```

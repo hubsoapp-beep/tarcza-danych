@@ -86,6 +86,16 @@ Skrypt dopisuje plugin do `~/.config/opencode/opencode.json`. Ręcznie wygląda 
 
 Zrestartuj OpenCode. Szczegóły, opcje i ograniczenia: [plugins/redactor-opencode/README.md](plugins/redactor-opencode/README.md).
 
+## Inni agenci
+
+- **Grok Build** — MVP: lokalny proxy + hooki `PreToolUse`/`PostToolUse`:
+  [adapters/grok/README.md](adapters/grok/README.md).
+- **Gemini CLI / Qwen Code** — następne, najlepsze hooki do pełnego parytetu.
+- **Codex CLI / Cline / Aider / Continue** — generic proxy, redaction only.
+
+Macierz możliwości i różnice: [docs/AGENCI.md](docs/AGENCI.md). Kolejność:
+[ROADMAP.md](ROADMAP.md).
+
 ## Komendy (Claude Code)
 
 | Komenda | Co robi |

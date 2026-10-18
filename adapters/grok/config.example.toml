@@ -1,0 +1,12 @@
+# Fragment ~/.grok/config.toml dla Tarczy danych.
+# Token lokalny znajdziesz w ~/.tarcza/token (tworzy go daemon).
+# Prawdziwy klucz xAI trzymaj w środowisku: TARCZA_UPSTREAM_KEY, nie tutaj.
+
+[model.tarcza-grok]
+model = "grok-4.5"
+name = "Grok via Tarcza"
+description = "Lokalny proxy Tarczy danych; model widzi placeholdery."
+base_url = "http://127.0.0.1:8787/v1"
+api_backend = "chat_completions"
+api_key = "<token z ~/.tarcza/token>"
+context_window = 256000

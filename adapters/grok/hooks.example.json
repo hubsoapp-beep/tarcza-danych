@@ -1,0 +1,48 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node --experimental-strip-types /ABS/PATH/TO/tarcza-danych/adapters/grok/hook.ts session-start",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node --experimental-strip-types /ABS/PATH/TO/tarcza-danych/adapters/grok/hook.ts pre-tool",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node --experimental-strip-types /ABS/PATH/TO/tarcza-danych/adapters/grok/hook.ts post-tool",
+            "timeout": 30
+          }
+        ]
+      }
+    ],
+    "PostToolUseFailure": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node --experimental-strip-types /ABS/PATH/TO/tarcza-danych/adapters/grok/hook.ts post-tool-failure",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  }
+}

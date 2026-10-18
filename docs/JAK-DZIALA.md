@@ -248,8 +248,14 @@ plugins/redactor-opencode/         OpenCode
   index.ts                         hooki OpenCode i komendy
   test/                            silnik + podpięcie + sejf
 
+adapters/grok/                     Grok Build (MVP)
+  daemon.ts                        proxy /v1 + /scrub + /restore + /stats
+  hook.ts                          PreToolUse / PostToolUse
+  token.ts                         ~/.tarcza/token (0600)
+
 scripts/install.sh                 instalacja Claude Code
 scripts/install-opencode.sh        wpis do ~/.config/opencode/opencode.json
+docs/AGENCI.md                     macierz agentów i adapterów
 ```
 
 ## 12. Testy

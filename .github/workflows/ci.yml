@@ -35,6 +35,17 @@ jobs:
           cache-dependency-path: plugins/redactor-opencode/package-lock.json
       - run: npm ci --no-audit --no-fund
       - run: CI=1 npm test
+  grok-tests:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: adapters/grok
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - run: node --experimental-strip-types test/proxy.test.mts
   no-real-secrets:
     runs-on: ubuntu-latest
     steps:

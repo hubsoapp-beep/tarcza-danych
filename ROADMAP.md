@@ -216,6 +216,72 @@ kosztu skanu od liczby wartości w sejfie.
 
 ---
 
+## Faza 5 — inni agenci 🟡
+
+Macierz możliwości: [docs/AGENCI.md](docs/AGENCI.md).
+
+### Agent K — `@tarcza/core` i daemon
+
+**Cel:** jeden silnik i jedno miejsce stanu zamiast kopii w każdym pluginie.
+
+**Zakres:**
+- wydzielić `detect.ts`, `pl.ts`, `scrub.ts`, `vault.ts`, `stats.ts` do
+  `packages/core`,
+- daemon HTTP na `127.0.0.1`: `/scrub`, `/restore`, `/stats`, `/health`,
+- token z `~/.tarcza/token` (0600), żadnych wartości w logach,
+- adaptery Claude/OpenCode/Grok importują core; żadnych trzecich kopii.
+
+**Akceptacja:** testy obu pluginów przechodzą bez zmian zachowania; nowy adapter
+nie kopiuje detektorów.
+
+### Agent L — Grok Build 🟡 MVP
+
+**Cel:** pełny adapter do oficjalnego `grok` (`xai-org/grok-build`).
+
+**Zrobione:**
+- lokalny proxy OpenAI-compatible (`chat_completions`) z redakcją requestu,
+- `PreToolUse` restore + blokada znaków powłoki,
+- `PostToolUse` scrub wyniku dla modelu,
+- wspólny daemon, token, testy.
+
+**Do zrobienia:**
+- `responses` i `messages` w proxy,
+- redakcja chunków streamu,
+- pakiet npm `@tarcza/grok` zamiast importu z `plugins/redactor-opencode`,
+- sprawdzić, czy Grok zapisuje prompt przed czy po proxy; jeśli przed —
+  opisać ograniczenie albo dodać wrapper,
+- pane/liczniki w TUI, jeśli Grok da slot.
+
+**Pliki:** `adapters/grok/*`.
+
+### Agent M — Gemini CLI
+
+**Cel:** pełny parytet bez proxy.
+
+**Zakres:**
+- `BeforeModel` → `scrubAll(messages)`,
+- `BeforeTool` → `restore(tool_input)` tylko dla lokalnych narzędzi,
+- `AfterTool` → scrub/replace `tool_response`,
+- `AfterModel` → redakcja chunków odpowiedzi,
+- `SessionStart` → sejf,
+- Qwen Code po Gemini, jeśli hooki są te same.
+
+**Akceptacja:** testy na fixture'ach hooków; brak regresji w Claude/OpenCode.
+
+### Agent N — generic proxy
+
+**Cel:** jedno proxy dla agentów bez hooków.
+
+**Zakres:**
+- OpenAI Chat Completions, Responses, Anthropic Messages, Gemini,
+- Codex CLI, Cline/Roo/Kilo, Continue, Aider, Goose, Crush, OpenHands,
+- streaming SSE i tool_calls,
+- jasny komunikat: „redaction only, bez restore”, jeśli agent nie ma hooka,
+- testy na nagranych requestach, bez prawdziwych kluczy.
+
+**Akceptacja:** agent bez hooka nie wysyła sekretu w prompcie; dokument mówi
+wprost, czego nie chroni.
+
 ## Kolejność i zależności
 
 ```
@@ -225,17 +291,20 @@ B (załączniki) ── D (http hooks)
 E (macierz) ── H (npm/Git)
 F (fuzz) ── G (audyt)
 J (polityki) — po G
+K (core + daemon) ──┬── L (Grok)
+                    ├── M (Gemini / Qwen)
+                    └── N (generic proxy: Codex, Cline, Aider, …)
 ```
 
 Rekomendowana kolejność dla jednego agenta:
 
-1. **E** — najpierw wiedzieć, na czym pracujemy.
-2. **C** — małe, domyka liczniki.
-3. **A** — panel na gotowych licznikach.
-4. **B** — załączniki.
-5. **F** — fuzz i perf.
-6. **G** — audyt.
-7. **H** — publikacja.
+1. **K** — core + daemon, żeby nie było czwartej kopii silnika.
+2. **M** — Gemini CLI (najpełniejsze hooki, najlepszy parytet).
+3. **L** — dokończyć Grok (proxy `responses`/`messages`, streaming).
+4. **N** — generic proxy dla Codex/Cline/Aider/Continue.
+5. **E** — macierz zgodności i wersje.
+6. **C**, **A**, **B** — liczniki, panel, załączniki.
+7. **F**, **G**, **H** — fuzz, audyt, publikacja.
 8. **I**, **J** — UX i polityki.
 
 ## Definition of Done dla każdego agenta

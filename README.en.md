@@ -33,6 +33,15 @@ cd tarcza-danych
 
 The script adds the plugin to `~/.config/opencode/opencode.json`. Details and limits: [plugins/redactor-opencode/README.md](plugins/redactor-opencode/README.md).
 
+### Other agents
+
+- **Grok Build** — MVP: local proxy + `PreToolUse`/`PostToolUse` hooks:
+  [adapters/grok/README.md](adapters/grok/README.md).
+- **Gemini CLI / Qwen Code** — next, the fullest hook set.
+- **Codex CLI / Cline / Aider / Continue** — generic proxy, redaction only.
+
+Capability matrix: [docs/AGENCI.md](docs/AGENCI.md). Order: [ROADMAP.md](ROADMAP.md).
+
 ## What it hides
 
 Vendor keys and tokens (about 70 formats), passwords after Polish or English labels (including low-entropy ones), Polish personal data with checksums (PESEL, NIP, REGON, ID card, IBAN, card, phone), IP addresses, logins, domains, emails, a glossary of your own clients and people, and every password, login and domain found in notes you point it at.
