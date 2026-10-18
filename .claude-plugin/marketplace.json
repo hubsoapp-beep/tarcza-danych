@@ -11,7 +11,7 @@
       "name": "redactor-pl",
       "source": "./plugins/redactor-pl",
       "description": "Podmienia hasła, klucze, dane osobowe PL i dane serwerów na placeholdery, zanim trafią do AI. Sejf z notatek, słownik własny, panel z licznikami.",
-      "version": "0.1.1",
+      "version": "0.1.2",
       "license": "MIT"
     }
   ]

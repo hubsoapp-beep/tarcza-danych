@@ -105,7 +105,7 @@ Wszystkie opcje są opcjonalne. Domyślne wartości są takie jak w `redactor-pl
 | `minEntropy` | `3.6` | Próg entropii dla tokenów. |
 | `minLength` | `24` | Najkrótszy token objęty testem entropii. |
 | `contextMinEntropy` | `3` | Próg obok nazwy klucza (`API_KEY=`, `Bearer`). |
-| `allow` | `""` | Wartości, których nie ukrywać (po przecinku). |
+| `allow` | `""` | Wartości, których nie ukrywać (po przecinku). Działa też na hasła, loginy, domeny, numery i słownik. |
 | `allowEmails` | `""` | Adresy albo domeny (`@example.com`) do pozostawienia. |
 | `allowPrefixes` | `""` | Prefiksy tokenów uznawanych za publiczne. |
 | `denyPrefixes` | `""` | Prefiksy, które mimo wyglądu mają przejść test entropii. |

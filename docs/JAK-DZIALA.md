@@ -173,6 +173,22 @@ Redaktor ma zawodzić bezpiecznie:
   `gh release`…) nie dostają prawdziwych wartości, żeby sekret nie wyjechał
   w historii gita.
 
+## 7a. Wyjątki
+
+Kolejność jest stała: `allow` > `allowPrefixes` > `allowEmails` > detektory.
+Wyjątek działa też na warstwę polską i sejf: wartość z `allow` nie zostanie
+ukryta jako `HASLO`, `LOGIN`, `DOMENA`, numer ani wpis słownika. Wartość
+dozwolona nie jest też uczona z notatek, więc nie wróci jako ukryta później.
+
+- `allow`: dokładne wartości, po przecinku (`sellso.pl,Kancelaria Nowak`).
+- `allowPrefixes`: prefiksy (`price_,prod_`).
+- `allowEmails`: adresy albo domeny (`@sellso.pl`).
+- `allowLocalUrls`: prywatny IP jako host URL-a (domyślnie `true`).
+- `0.0.0.0`, `127.0.0.1`, `::1`, `localhost`: zawsze poza skanem.
+
+Nie dodawaj do `allow` haseł, kluczy ani numerów, których naprawdę nie chcesz
+pokazywać. Wyjątek jest obejściem detektora, nie sejfem.
+
 ## 8. Lokalne a zdalne narzędzia
 
 `restoreTools` domyślnie: `shell,write,edit,patch` (OpenCode) oraz

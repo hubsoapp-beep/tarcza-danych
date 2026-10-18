@@ -1,6 +1,6 @@
 {
   "name": "redactor-opencode",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Tarcza danych dla OpenCode: ukrywa klucze, hasła, dane osobowe PL i infrastrukturę przed modelem, a w lokalnych narzędziach przywraca prawdziwe wartości.",
   "type": "module",
   "main": "index.ts",
@@ -18,7 +18,7 @@
     "LICENSE.upstream"
   ],
   "scripts": {
-    "test": "node --experimental-strip-types test/detect.test.mts && node --experimental-strip-types test/pl.test.mts && node --experimental-strip-types test/random-tags.test.mts && node --experimental-strip-types test/session-privacy.test.mts && node --experimental-strip-types test/pii-options.test.mts && node --experimental-strip-types test/local-urls.test.mts && node --experimental-strip-types test/vault.test.mts && node --experimental-strip-types test/opencode.test.mts",
+    "test": "node --experimental-strip-types test/detect.test.mts && node --experimental-strip-types test/pl.test.mts && node --experimental-strip-types test/random-tags.test.mts && node --experimental-strip-types test/session-privacy.test.mts && node --experimental-strip-types test/pii-options.test.mts && node --experimental-strip-types test/local-urls.test.mts && node --experimental-strip-types test/allow.test.mts && node --experimental-strip-types test/vault.test.mts && node --experimental-strip-types test/opencode.test.mts",
     "test:plugin": "node --experimental-strip-types test/opencode.test.mts"
   },
   "engines": {

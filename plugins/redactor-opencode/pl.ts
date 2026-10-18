@@ -357,13 +357,29 @@ function domains(text: string, out: Hit[]): void {
 
 const LEARN_KINDS = new Set<Kind>(['HASLO', 'LOGIN', 'DOMENA'])
 
+// The user's allow list is an override, not a hint: it applies to the Polish
+// layer too (passwords, logins, domains, numbers and the glossary).
+function allowedValue(value: string, cfg: Config): boolean {
+  if (cfg.allow.has(value)) return true
+  for (const prefix of cfg.allowPrefix) if (prefix && value.startsWith(prefix)) return true
+  return false
+}
+
+function allowedEmail(value: string, cfg: Config): boolean {
+  const low = value.toLowerCase()
+  return cfg.allowEmails.some((rule) => {
+    const r = rule.toLowerCase().trim()
+    return r.startsWith('@') ? low.endsWith(r) : low === r
+  })
+}
+
 function findHits(text: string, cfg: Config): Hit[] {
   const out: Hit[] = []
   passwords(text, out)
   if (cfg.plPersonal) personal(text, out)
   if (cfg.plInfra && cfg.plLogins) logins(text, out)
   if (cfg.plInfra && cfg.plDomains) domains(text, out)
-  return out
+  return out.filter((h) => !allowedValue(text.slice(h.start, h.end), cfg))
 }
 
 function overlapFree(hits: Hit[], tagRanges: [number, number][]): Hit[] {
@@ -386,11 +402,11 @@ function tagRangesOf(text: string): [number, number][] {
 }
 
 // A value hidden by label becomes a known value: hidden wherever it turns up.
-function hide(kind: Kind, value: string): string {
+function hide(kind: Kind, value: string, cfg?: Config): string {
   const tag = mint(kind, value)
   // A value is learned only when it is unlikely to be a plain word: one false
   // hit on `True` must not hide every `True` that follows.
-  if (LEARN_KINDS.has(kind) && value.length >= 6 && (kind === 'DOMENA' || humanSecret(value) || /^[\p{L}]{6,}$/u.test(value) && kind === 'LOGIN')) {
+  if (LEARN_KINDS.has(kind) && value.length >= 6 && !(cfg && allowedValue(value, cfg)) && (kind === 'DOMENA' || humanSecret(value) || /^[\p{L}]{6,}$/u.test(value) && kind === 'LOGIN')) {
     learn(kind, value)
     if (kind === 'HASLO' && value.length >= 8) keepSecret(value)
   }
@@ -400,20 +416,36 @@ function hide(kind: Kind, value: string): string {
 // `passwordsOnly`: the text is context the model needs to work with (CLAUDE.md,
 // a changed file's diff), so only passwords go; logins, domains, people and
 // numbers stay readable there.
-function applyKnown(text: string, passwordsOnly: boolean): string {
+function applyKnown(text: string, passwordsOnly: boolean, cfg: Config): string {
   let out = text
   if (!passwordsOnly) {
     for (const rule of glossary) {
       rule.re.lastIndex = 0
-      if (rule.re.test(out)) out = out.replace(rule.re, (m) => mint(rule.kind, m))
+      if (rule.re.test(out)) {
+        out = out.replace(rule.re, (m, offset: number, whole: string) => {
+          if (allowedValue(m, cfg)) return m
+          // A glossary domain inside an address is kept when the address is
+          // allowed, even if the domain itself is not in `allow`.
+          if (rule.kind === 'DOMENA' && offset > 0 && whole[offset - 1] === '@') {
+            let start = offset - 1
+            while (start > 0 && /[A-Za-z0-9._%+-]/.test(whole[start - 1]!)) start--
+            const email = whole.slice(start, offset + m.length)
+            if (allowedEmail(email, cfg) || allowedValue(email, cfg)) return m
+          }
+          return mint(rule.kind, m)
+        })
+      }
     }
   }
   const re = knownRegex()
   if (re) {
     re.lastIndex = 0
     out = out.replace(re, (m) => {
+      if (allowedValue(m, cfg)) return m
       const at = m.lastIndexOf('@')
-      if (at > 0 && known.get(m.slice(at + 1)) === 'DOMENA') return passwordsOnly ? m : mint('EMAIL', m)
+      if (at > 0 && known.get(m.slice(at + 1)) === 'DOMENA') {
+        return passwordsOnly || allowedEmail(m, cfg) ? m : mint('EMAIL', m)
+      }
       const kind = known.get(m) ?? 'HASLO'
       return passwordsOnly && kind !== 'HASLO' ? m : mint(kind, m)
     })
@@ -423,14 +455,14 @@ function applyKnown(text: string, passwordsOnly: boolean): string {
 
 export function scrubPl(text: string, cfg: Config, passwordsOnly = false): string {
   if (!cfg.pl || text.length < 6) return text
-  let out = applyKnown(text, passwordsOnly)
+  let out = applyKnown(text, passwordsOnly, cfg)
   const found = findHits(out, cfg)
   const hits = overlapFree(passwordsOnly ? found.filter((h) => h.kind === 'HASLO') : found, tagRangesOf(out))
   if (hits.length === 0) return out
   const parts: string[] = []
   let last = 0
   for (const h of hits) {
-    parts.push(out.slice(last, h.start), hide(h.kind, out.slice(h.start, h.end)))
+    parts.push(out.slice(last, h.start), hide(h.kind, out.slice(h.start, h.end), cfg))
     last = h.end
   }
   parts.push(out.slice(last))
@@ -445,7 +477,7 @@ export function learnFrom(text: string, cfg: Config): number {
   let n = 0
   for (const h of overlapFree(findHits(text, cfg), tags)) {
     if (!LEARN_KINDS.has(h.kind)) continue
-    hide(h.kind, text.slice(h.start, h.end))
+    hide(h.kind, text.slice(h.start, h.end), cfg)
     n++
   }
   return n

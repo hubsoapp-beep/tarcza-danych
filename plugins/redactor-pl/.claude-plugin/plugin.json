@@ -1,7 +1,7 @@
 {
   "$schema": "https://anthropic.com/claude-code/plugin.schema.json",
   "name": "redactor-pl",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Tarcza danych: podmienia hasła, klucze, dane osobowe PL i dane serwerów na placeholdery, zanim trafią do AI. Fork transcript-redactor 0.4.1 z warstwą polską, sejfem z notatek i panelem.",
   "author": {
     "name": "Miłosz Zając"

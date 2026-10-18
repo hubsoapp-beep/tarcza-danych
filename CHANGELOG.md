@@ -1,5 +1,20 @@
 # Changelog
 
+## 0.2.2
+
+The allow list now works everywhere.
+
+- `allow`, `allowPrefixes` and `allowEmails` override the Polish layer too:
+  passwords, logins, domains, personal numbers, the glossary and values learned
+  from notes. Before, `allow` only affected the upstream secret/PII scan, so a
+  value explicitly marked as public could still become `HASLO`/`DOMENA`/`LOGIN`.
+- A glossary domain inside an allowed address (`jan@example.com`) stays when the
+  address is allowed by `allowEmails` or `allow`.
+- An allowed value is not learned from the vault, so it stays bare later.
+- Tests: `plugins/redactor-opencode/test/allow.test.mts` and the same test in
+  `plugins/redactor-pl/test/allow.test.mts`.
+- Plugin versions: OpenCode `0.2.2`, Claude Code `0.1.2`.
+
 ## 0.2.1
 
 Fix for local server links.
